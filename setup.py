@@ -3,6 +3,7 @@ from setuptools import setup
 import subprocess
 import os
 import re
+from security import safe_command
 
 
 def _get_version():
@@ -24,7 +25,7 @@ def _get_version():
             version = '.post'.join(version.split('-')[:2])
 
         with open(os.devnull, 'w') as fd_devnull:
-            subprocess.call(['git', 'status'],
+            safe_command.run(subprocess.call, ['git', 'status'],
                             stdout=fd_devnull, stderr=fd_devnull)
 
         cmd = 'git diff-index --name-only HEAD'.split()
